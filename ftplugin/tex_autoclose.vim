@@ -2,7 +2,7 @@
 " Maintainor:	Gautam Iyer <gautam@math.uchicago.edu>
 " Created:	Mon 23 Feb 2004 04:47:53 PM CST
 " Last Changed:	Wed 25 Mar 2009 10:57:46 AM PDT
-" Version:	1.2
+" Version:	1.2.1
 "
 " Description:
 "   Provides mappings to automatically close environments.
@@ -20,6 +20,9 @@
 "
 "
 " History:
+"   Version 1.2.1   Added "<C-_>" binding which matches the behavior of
+"                   popular clostag.vim plugin.
+"
 "   Version 1.2:	Disabled "}" auto closing environments by default.
 "			This ruined the change history (and didn't account for
 "			fold markers). Provided "<C-\>c" to close the last
@@ -59,6 +62,8 @@ endif
 if !hasmapto("TexClosePrev()")
     nnoremap <buffer> <silent>	<LocalLeader>c	:call TexClosePrev(0)<cr>
     inoremap <buffer> <silent>	<C-\>c		<esc>:call TexClosePrev(1)<cr>
+    " Match the key binding for closetag.vim
+    inoremap <buffer> <silent>	<C-_>		<esc>:call TexClosePrev(1)<cr>
 endif
 
 " Function to automatically close the environment
