@@ -1,8 +1,8 @@
 " Vim Tex / LaTeX ftplugin to automatically close environments.
 " Maintainor:	Gautam Iyer <gautam@math.uchicago.edu>
 " Created:	Mon 23 Feb 2004 04:47:53 PM CST
-" Last Changed:	Wed 25 Mar 2009 10:57:46 AM PDT
-" Version:	1.2
+" Last Changed:	Mon 07 Jul 2014 11:45:07 PM CEST
+" Version:	1.3
 "
 " Description:
 "   Provides mappings to automatically close environments.
@@ -81,7 +81,8 @@ function! TexCloseCurrent()
     endif
 endfunction
 
-function! TexClosePrev( restore_insert )
+" Return the name of the innermost OPEN environment at the cursor position.
+function! TexGetEnvName()
     let lnum = 0
     let cnum = 0
 
@@ -102,12 +103,21 @@ function! TexClosePrev( restore_insert )
     else
 	let fold = matchstr( line, '\v^\\begin\{[A-Za-z]+\*?\}.*\zs\%\{{3}[1-9]?$')
     endif
-    let fold = tr( fold, '{', '}' )
 
-    exec 'normal! a\end{' . env . '}' . fold . "\<esc>"
+    return [env, fold]
+endfunction
+
+function! TexClosePrev( restore_insert )
+    let [env, fold] = TexGetEnvName()
+    if env != ''
+	let fold = tr( fold, '{', '}' )
+	exec 'normal a\end{' . env . '}' . tr( fold, '{', '}' ) . "\<esc>" . 'F\==f}'
+	"call append( line('.')-1, '\end{' . env . '}' . fold )
+    endif
 
     if a:restore_insert == 1
 	if col('.') < col('$') - 1
+	    call setpos( '.', [0, line('.'), col('.') + 1, 0] )
 	    startinsert
 	else
 	    startinsert!

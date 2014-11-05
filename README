@@ -7,3 +7,6 @@ Pressing "\c" in normal mode (or <C-\>c in insert mode) will cause the last open
 Also pressing "<C-\>}" in insert mode when the cursor is at the end of a "\begin{environment}" will automatically generate a "\close{environment}". It will leave the cursor at the end of the "\begin{environment}" (in insert mode), so that the user can enter arguments [if any].
 
 Small and functional. Suggestions welcome.
+
+Git-hub page: https://github.com/gi1242/vim-tex-autoclose
+
